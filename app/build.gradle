@@ -12,6 +12,7 @@ android {
         dataBinding {
             enabled = true
         }
+        multiDexEnabled true
     }
     buildTypes {
         debug {
@@ -23,7 +24,12 @@ android {
             buildConfigField 'String', "ApiKey", Weather_ApiKey
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
+
 
 dependencies {
 
@@ -74,6 +80,6 @@ dependencies {
     //Moshi
     implementation "com.squareup.moshi:moshi-kotlin:$moshiVersion"
 
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0-beta01'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.0.0-beta01'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha02'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.1.0-alpha02'
 }
