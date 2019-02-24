@@ -12,6 +12,9 @@ import timber.log.Timber;
  * Created by Sheila Owens on 2/24/19.
  */
 public class MainActivity extends AppCompatActivity {
+
+   // private WeatherViewModel weatherViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,9 +23,9 @@ public class MainActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_main);
 
-        //        weatherViewModel = ViewModelProviders.of(this).get(WeatherViewModel::class.java)
-//
-//        weatherViewModel.fetchCurrentWeather()
+  //      weatherViewModel = ViewModelProviders.of(this).get(WeatherViewModel.class);
+
+//        weatherViewModel.fetchCurrentWeather();
 //        weatherViewModel.currentWeatherLiveData.observe(this, Observer {
 //            Timber.d("Sheila Made it here")
 //        })
