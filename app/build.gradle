@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 28
+    buildToolsVersion "28.0.3"
     defaultConfig {
         applicationId "com.ssowens.android.myweatherapp"
         minSdkVersion 22
@@ -55,7 +56,7 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$okhttp3_version"
     implementation 'com.squareup.okhttp3:logging-interceptor:3.11.0'
 
-    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit2_version"

@@ -16,7 +16,6 @@ object ApiFactory {
 
     val apiKey = BuildConfig.ApiKey
     val WEATHER_BASE_URL = "http://api.openweathermap.org/data/2.5/"
-    // Forcast - http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID={APIKEY}
     // City api.openweathermap.org/data/2.5/weather?q={city name}
 
 
@@ -63,5 +62,4 @@ object ApiFactory {
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .build()
 
-     val weatherApi : WeatherApi = retrofit().create(WeatherApi::class.java)
 }
