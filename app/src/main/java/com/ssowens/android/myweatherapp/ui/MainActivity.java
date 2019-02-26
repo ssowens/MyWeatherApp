@@ -4,12 +4,16 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ssowens.android.myweatherapp.BuildConfig;
 import com.ssowens.android.myweatherapp.R;
 import com.ssowens.android.myweatherapp.model.WeatherResponseByCity;
 import com.ssowens.android.myweatherapp.service.WeatherApi;
+
+import java.text.DateFormat;
+import java.util.Date;
 
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
@@ -27,12 +31,13 @@ import timber.log.Timber;
 public class MainActivity extends AppCompatActivity {
 
     public static String BaseUrl = "http://api.openweathermap.org/";
+    public static String UNITS = "imperial";
+    public String AppId = BuildConfig.ApiKey;
 
-    //TODO FOR TESTING ONLY
-    public static String AppId = "2e65127e909e178d0af311a81f39948c";
-    public String apiKey = BuildConfig.ApiKey;
-    public static String lat = "35";
-    public static String lon = "139";
+    // For Atlanta - Testing ONLY
+    public static String lat = "33.935101";
+    public static String lon = "-84.360924";
+
     WeatherResponseByCity byCity;
 
     @BindView(R.id.high_temperature)
@@ -41,6 +46,10 @@ public class MainActivity extends AppCompatActivity {
     TextView lowTemperature;
     @BindView(R.id.weather_description)
     TextView weatherDesciption;
+    @BindView(R.id.weather_date)
+    TextView currentDate;
+    @BindView(R.id.weather_icon)
+    ImageView weatherIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         getCurrentWeather();
+
 
     }
 
@@ -84,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         WeatherApi service = retrofit.create(WeatherApi.class);
-        Call<WeatherResponseByCity> call = service.getCurrentWeatherData(lat, lon, AppId);
+        Call<WeatherResponseByCity> call = service.getCurrentWeatherData(lat, lon, UNITS, AppId);
         call.enqueue(new Callback<WeatherResponseByCity>() {
             @Override
             public void onResponse(Call<WeatherResponseByCity> call, Response<WeatherResponseByCity> response) {
@@ -92,6 +102,13 @@ public class MainActivity extends AppCompatActivity {
                     if (response.body() != null) {
                         byCity = response.body();
                         Timber.d("weatherRespBycity %s", response.body().toString());
+
+                        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+                        currentDate.setText(currentDateTimeString);
+                        weatherDesciption.setText(byCity.getWeather().get(0).main);
+                        highTemperature.setText(String.format("%.0f", byCity.getMain().temp) + "\u00b0");
+                        lowTemperature.setText(String.format("%.0f", byCity.getMain().temp_min) + "\u00b0");
+                        //weatherIcon.setImageResource(R.id.weather_icon);
                     }
                 } else {
                     Timber.d("Returned empty response");
