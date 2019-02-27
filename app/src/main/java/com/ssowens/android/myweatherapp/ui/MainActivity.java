@@ -1,11 +1,14 @@
 package com.ssowens.android.myweatherapp.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.ssowens.android.myweatherapp.BuildConfig;
@@ -17,6 +20,8 @@ import java.text.DateFormat;
 import java.util.Date;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -35,8 +40,6 @@ public class MainActivity extends AppCompatActivity {
     public static String IMAGE_URL = "img/w/";
     public static String PNG_EXT = ".png";
     public static String DEGREE_SYMBOL = "\u00b0";
-
-    //Images - http://openweathermap.org/img/w/10d.png
 
     public static String UNITS = "imperial";
     public String AppId = BuildConfig.ApiKey;
@@ -57,6 +60,11 @@ public class MainActivity extends AppCompatActivity {
     TextView currentDate;
     @BindView(R.id.weather_icon)
     ImageView weatherIcon;
+    @BindView(R.id.current_weather_layout)
+    ConstraintLayout main_constraint_layout;
+
+    private ForecastAdapter forecastAdapter;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +76,14 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         getCurrentWeather();
+        main_constraint_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "This is the current weather", Toast.LENGTH_SHORT).show();
+                Intent weatherDetailIntent = new Intent(MainActivity.this, DetailActivity.class);
+                startActivity(weatherDetailIntent);
+            }
+        });
 
 
     }
