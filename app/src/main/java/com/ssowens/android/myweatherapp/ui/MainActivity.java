@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.ssowens.android.myweatherapp.BuildConfig;
 import com.ssowens.android.myweatherapp.R;
 import com.ssowens.android.myweatherapp.model.WeatherResponseByCity;
@@ -30,7 +31,13 @@ import timber.log.Timber;
  */
 public class MainActivity extends AppCompatActivity {
 
-    public static String BaseUrl = "http://api.openweathermap.org/";
+    public static String BASE_URL = "http://api.openweathermap.org/";
+    public static String IMAGE_URL = "img/w/";
+    public static String PNG_EXT = ".png";
+    public static String DEGREE_SYMBOL = "\u00b0";
+
+    //Images - http://openweathermap.org/img/w/10d.png
+
     public static String UNITS = "imperial";
     public String AppId = BuildConfig.ApiKey;
 
@@ -90,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void getCurrentWeather() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BaseUrl)
+                .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         WeatherApi service = retrofit.create(WeatherApi.class);
@@ -106,14 +113,21 @@ public class MainActivity extends AppCompatActivity {
                         String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
                         currentDate.setText(currentDateTimeString);
                         weatherDesciption.setText(byCity.getWeather().get(0).main);
-                        highTemperature.setText(String.format("%.0f", byCity.getMain().temp) + "\u00b0");
-                        lowTemperature.setText(String.format("%.0f", byCity.getMain().temp_min) + "\u00b0");
-                        //weatherIcon.setImageResource(R.id.weather_icon);
+                        highTemperature.setText(String.format("%.0f", byCity.getMain().temp) + DEGREE_SYMBOL);
+                        lowTemperature.setText(String.format("%.0f", byCity.getMain().temp_min) + DEGREE_SYMBOL);
+                        String url =
+                                BASE_URL + IMAGE_URL + byCity.getWeather().get(0).getIcon() +
+                                        PNG_EXT;
+                        Timber.d("Sheila url %s", url);
+                        Glide
+                                .with(getApplicationContext())
+                                .load(url)
+                                .into(weatherIcon);
+
                     }
                 } else {
                     Timber.d("Returned empty response");
                 }
-
             }
 
             @Override
