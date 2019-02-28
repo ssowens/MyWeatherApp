@@ -41,12 +41,13 @@ public class MainActivity extends AppCompatActivity {
     public static String PNG_EXT = ".png";
     public static String DEGREE_SYMBOL = "\u00b0";
 
-    public static String UNITS = "imperial";
+    public String UNITS = "imperial";
     public String AppId = BuildConfig.ApiKey;
 
     // For Atlanta - Testing ONLY
-    public static String lat = "33.935101";
-    public static String lon = "-84.360924";
+    public String lat = "33.935101";
+    public String lon = "-84.360924";
+    public String city_id = "524901";
 
     WeatherResponseByCity byCity;
 
@@ -80,12 +81,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "This is the current weather", Toast.LENGTH_SHORT).show();
-                Intent weatherDetailIntent = new Intent(MainActivity.this, DetailActivity.class);
+                Intent weatherDetailIntent = new Intent(MainActivity.this, ForecastActivity.class);
                 startActivity(weatherDetailIntent);
             }
         });
-
-
     }
 
     @Override

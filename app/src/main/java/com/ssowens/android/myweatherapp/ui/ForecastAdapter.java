@@ -1,33 +1,30 @@
 package com.ssowens.android.myweatherapp.ui;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.ssowens.android.myweatherapp.R;
+import com.ssowens.android.myweatherapp.databinding.ForecastListItemBinding;
+import com.ssowens.android.myweatherapp.model.WeatherForecast;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
 
 /**
  * Created by Sheila Owens on 2/26/19.
  */
-public class ForecastAdapter extends RecyclerView.Adapter {
-
-    private final Context context;
+public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastViewHolder> {
 
     final private ForecastAdapterOnClickHandler clickHandler;
+    private List<WeatherForecast.WeatherList> weatherList;
+    private WeatherForecast weatherForecast;
 
-
-
-
-    public ForecastAdapter(Context context, ForecastAdapterOnClickHandler clickHandler) {
-        this.context = context;
+    public ForecastAdapter(ForecastAdapterOnClickHandler clickHandler,
+                           WeatherForecast weatherForecast) {
         this.clickHandler = clickHandler;
+        this.weatherForecast= weatherForecast;
     }
 
     public interface ForecastAdapterOnClickHandler {
@@ -37,41 +34,31 @@ public class ForecastAdapter extends RecyclerView.Adapter {
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view =
-                LayoutInflater.from(parent.getContext()).inflate(R.layout.forecast_list_item,
-                        parent, false);
-        return new ForecastViewHolder(view);
+    public ForecastViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        ForecastListItemBinding forecastListItemBinding =
+                ForecastListItemBinding.inflate(layoutInflater, parent, false);
+        return new ForecastViewHolder(forecastListItemBinding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-//        Glide.with(context)
-//                .asBitmap()
-//                .load()
-//                .into(holder.)
-//        holder.
+    public void onBindViewHolder(@NonNull ForecastViewHolder holder, int position) {
+       holder.binding.setModel(weatherForecast);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return weatherForecast.getList().size();
     }
 
-    class ForecastViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ForecastViewHolder extends RecyclerView.ViewHolder implements
+            View.OnClickListener {
 
-        @BindView(R.id.weather_icon)
-        ImageView weatherImage;
-        @BindView(R.id.weather_date)
-        TextView weatherDate;
-        @BindView(R.id.weather_description)
-        TextView description;
-        @BindView(R.id.high_temperature)
-        TextView highTemp;
+        private ForecastListItemBinding binding;
 
-        public ForecastViewHolder(@NonNull View itemView) {
-            super(itemView);
-
+        ForecastViewHolder(ForecastListItemBinding itemBinding) {
+            super(itemBinding.getRoot());
+            this.binding = itemBinding;
             itemView.setOnClickListener(this);
         }
 

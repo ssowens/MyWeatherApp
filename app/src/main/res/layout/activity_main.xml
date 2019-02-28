@@ -11,7 +11,7 @@
     android:paddingStart="@dimen/today_forecast_list_item_vertical_padding"
     android:paddingTop="@dimen/today_forecast_list_item_vertical_padding"
     android:clickable="true"
-    tools:context=".ui.MainActivity">
+    android:focusable="true">
 
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       - This Guideline divides the screen into a left half and a right half and is used to        -
