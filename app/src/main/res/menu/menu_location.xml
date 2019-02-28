@@ -2,12 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:id="@+id/action_city1"
+        android:title="@string/action_city1"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_map"
-        android:title="@string/action_map"
+        android:id="@+id/action_city2"
+        android:title="@string/action_city2"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_city3"
+        android:title="@string/action_city3"
         app:showAsAction="never" />
 </menu>

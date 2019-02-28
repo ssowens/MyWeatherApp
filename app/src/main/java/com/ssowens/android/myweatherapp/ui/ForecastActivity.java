@@ -8,6 +8,7 @@ import com.ssowens.android.myweatherapp.model.WeatherForecast;
 import com.ssowens.android.myweatherapp.model.WeatherResponseByCity;
 import com.ssowens.android.myweatherapp.service.WeatherApi;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,7 +35,7 @@ public class ForecastActivity extends AppCompatActivity implements
     private ForecastAdapter.ForecastAdapterOnClickHandler clickHandler;
 
     public ForecastAdapter forecastAdapter;
-    private List<WeatherForecast> weatherList;
+    private List<WeatherForecast.WeatherList> weatherList = new ArrayList<>();
     RecyclerView recyclerView;
 
     @Override
@@ -67,7 +68,8 @@ public class ForecastActivity extends AppCompatActivity implements
                         Timber.d("Sheila Detail - WeatherForecast %s",
                                 response.body().toString());
 
-                        forecastAdapter = new ForecastAdapter(clickHandler, weatherForecast);
+                        convertData(weatherForecast);
+                        forecastAdapter = new ForecastAdapter(clickHandler, weatherList);
                         recyclerView.setAdapter(forecastAdapter);
 
                     }
@@ -83,6 +85,9 @@ public class ForecastActivity extends AppCompatActivity implements
         });
     }
 
+    private void convertData(WeatherForecast weatherForecast) {
+        weatherList.addAll(weatherForecast.getList());
+    }
 
     @Override
     public void onClick(long date) {

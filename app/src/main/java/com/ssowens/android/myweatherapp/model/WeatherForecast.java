@@ -256,6 +256,13 @@ public class WeatherForecast {
             this.dtTxt = dtTxt;
         }
 
+        public String getDescription() {
+            if (getWeather() != null) {
+                return getWeather().get(0).description;
+            }
+            return "";
+        }
+
         @Override
         public String toString() {
             return "WeatherList{" +
@@ -290,16 +297,16 @@ public class WeatherForecast {
         @SerializedName("temp_kf")
         private Double tempKf;
 
-        public Double getTemp() {
-            return temp;
+        public String getTemp() {
+            return temp.toString();
         }
 
         public void setTemp(Double temp) {
             this.temp = temp;
         }
 
-        public Double getTempMin() {
-            return tempMin;
+        public String getTempMin() {
+            return tempMin.toString();
         }
 
         public void setTempMin(Double tempMin) {
@@ -397,6 +404,7 @@ public class WeatherForecast {
         }
     }
 
+
     public class Weather {
 
         @SerializedName("id")
@@ -424,6 +432,13 @@ public class WeatherForecast {
             this.main = main;
         }
 
+//                if (getOffers() != null) {
+//            if (!TextUtils.isEmpty(getOffers().get(0).getGuests().getAdults()))
+//                return getOffers().get(0).getGuests().getAdults() + " " + "guests";
+//        }
+//        return "0";
+//    }
+//
         public String getDescription() {
             return description;
         }
@@ -432,6 +447,13 @@ public class WeatherForecast {
             this.description = description;
         }
 
+//        @BindingAdapter("photoUrl")
+//        public static void loadImage(ImageView view, String photoUrl) {
+//            Glide.with(view.getContext())
+//                    .load(photoUrl)
+//                    .into(view);
+//        }
+//        @BindingAdapter("photoUrl")
         public String getIcon() {
             String iconUrl = BASE_URL + IMAGE_URL + icon;
             Timber.d("Sheila forecast url %s", iconUrl);

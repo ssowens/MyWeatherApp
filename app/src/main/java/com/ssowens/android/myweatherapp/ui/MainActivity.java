@@ -45,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
     public String AppId = BuildConfig.ApiKey;
 
     // For Atlanta - Testing ONLY
-    public String lat = "33.935101";
-    public String lon = "-84.360924";
+    public String lat = "33.749";
+    public String lon = "-71.0583";
     public String city_id = "524901";
 
     WeatherResponseByCity byCity;
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        getCurrentWeather();
+        getCurrentWeather(lat, lon);
         main_constraint_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,18 +99,33 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            //startActivity(new Intent(this, SettingsActivity.class));
+        if (id == R.id.action_city1) {
+            // Atlanta
+            setTitle(getResources().getString(R.string.action_city1));
+            lat = "33.749";
+            lon = "-71.0583";
+            getCurrentWeather(lat, lon);
             return true;
         }
-        if (id == R.id.action_map) {
-            //openPreferredLocationInMap();
+        if (id == R.id.action_city2) {
+            setTitle(getResources().getString(R.string.action_city2));
+            lat = "42.3603";
+            lon = "-71.0583";
+            getCurrentWeather(lat, lon);
+            return true;
+        }
+        if (id == R.id.action_city3) {
+            //Miama
+            setTitle(getResources().getString(R.string.action_city3));
+            lat = "25.7743";
+            lon = "-80.1937";
+            getCurrentWeather(lat, lon);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public void getCurrentWeather() {
+    public void getCurrentWeather(String lat, String lon) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -133,7 +148,6 @@ public class MainActivity extends AppCompatActivity {
                         String url =
                                 BASE_URL + IMAGE_URL + byCity.getWeather().get(0).getIcon() +
                                         PNG_EXT;
-                        Timber.d("Sheila url %s", url);
                         Glide
                                 .with(getApplicationContext())
                                 .load(url)

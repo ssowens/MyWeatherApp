@@ -5,7 +5,7 @@
 
         <variable
             name="model"
-            type="com.ssowens.android.myweatherapp.model.WeatherForecast"/>
+            type="com.ssowens.android.myweatherapp.model.WeatherForecast.WeatherList"/>
     </data>
 
     <androidx.cardview.widget.CardView
@@ -26,8 +26,6 @@
             android:paddingRight="@dimen/list_item_padding_horizontal"
             android:paddingTop="@dimen/list_item_padding_vertical">
 
-
-
             <TextView
                 android:id="@+id/weather_date"
                 android:layout_width="wrap_content"
@@ -44,7 +42,7 @@
                 android:id="@+id/weather_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rainy"
+                android:text="@{model.description}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="@color/secondary_text"
                 app:layout_constraintLeft_toLeftOf="@+id/weather_date"
@@ -58,7 +56,7 @@
                 android:layout_marginEnd="@dimen/forecast_temperature_space"
                 android:layout_marginRight="@dimen/forecast_temperature_space"
                 android:fontFamily="sans-serif-light"
-                android:text="19\u00b0"
+                android:text="@{model.main.temp}"
                 android:textColor="@color/primary_text"
                 android:textSize="@dimen/forecast_text_size"
                 app:layout_constraintBottom_toTopOf="@+id/guideline"
@@ -72,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
                 android:gravity="end"
-                android:text="10\u00b0"
+                android:text="@{model.main.tempMin}"
                 android:textSize="@dimen/forecast_text_size"
                 app:layout_constraintBottom_toBottomOf="@+id/guideline"
                 app:layout_constraintRight_toRightOf="parent"

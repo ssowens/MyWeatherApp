@@ -5,4 +5,7 @@
     <string name="action_map">Map Location</string>
     <!--Used in overflow menu to refresh weather data-->
     <string name="action_refresh">Refresh</string>
+    <string name="action_city1">Atlanta</string>
+    <string name="action_city2">Boston</string>
+    <string name="action_city3">Miami</string>
 </resources>

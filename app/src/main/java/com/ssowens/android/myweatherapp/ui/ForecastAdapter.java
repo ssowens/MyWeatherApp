@@ -22,9 +22,9 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
     private WeatherForecast weatherForecast;
 
     public ForecastAdapter(ForecastAdapterOnClickHandler clickHandler,
-                           WeatherForecast weatherForecast) {
+                           List<WeatherForecast.WeatherList> weatherForecast) {
         this.clickHandler = clickHandler;
-        this.weatherForecast= weatherForecast;
+        this.weatherList= weatherForecast;
     }
 
     public interface ForecastAdapterOnClickHandler {
@@ -43,12 +43,12 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
 
     @Override
     public void onBindViewHolder(@NonNull ForecastViewHolder holder, int position) {
-       holder.binding.setModel(weatherForecast);
+       holder.binding.setModel(weatherList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return weatherForecast.getList().size();
+        return weatherList.size();
     }
 
     class ForecastViewHolder extends RecyclerView.ViewHolder implements
