@@ -1,11 +1,15 @@
 package com.ssowens.android.myweatherapp.ui;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,7 +25,6 @@ import java.util.Date;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -40,6 +43,13 @@ public class MainActivity extends AppCompatActivity {
     public static String IMAGE_URL = "img/w/";
     public static String PNG_EXT = ".png";
     public static String DEGREE_SYMBOL = "\u00b0";
+    public static final String ARG_LAT = "lat";
+    public static final String ARG_LON = "lon";
+    public static final String LAT_KEY = "mylat";
+    public static final String LONG_KEY = "mylong";
+    public String savedLat;
+    public String savedLon;
+
 
     public String UNITS = "imperial";
     public String AppId = BuildConfig.ApiKey;
@@ -47,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
     // For Atlanta - Testing ONLY
     public String lat = "33.749";
     public String lon = "-71.0583";
-    public String city_id = "524901";
 
     WeatherResponseByCity byCity;
 
@@ -64,9 +73,6 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.current_weather_layout)
     ConstraintLayout main_constraint_layout;
 
-    private ForecastAdapter forecastAdapter;
-    private RecyclerView recyclerView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,15 +82,39 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        getCurrentWeather(lat, lon);
-        main_constraint_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        if (isOnline()) {
+            getCurrentWeather(lat, lon);
+            Toast.makeText(getApplicationContext(), "Current Weather displayed",
+                    Toast.LENGTH_SHORT).show();
+
+            main_constraint_layout.setOnClickListener(v -> {
                 Toast.makeText(getApplicationContext(), "This is the current weather", Toast.LENGTH_SHORT).show();
                 Intent weatherDetailIntent = new Intent(MainActivity.this, ForecastActivity.class);
+                weatherDetailIntent.putExtra(ARG_LAT, lat);
+                weatherDetailIntent.putExtra(ARG_LON, lon);
                 startActivity(weatherDetailIntent);
-            }
-        });
+
+            });
+        } else {
+            Toast.makeText(getApplicationContext(), "No Internet Connectivity",
+                    Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
+
+    public void saveLocationToSharedPreferences(String myLat, String myLon) {
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(LAT_KEY, myLat);
+        editor.putString(LONG_KEY, myLon);
+        editor.apply();
     }
 
     @Override
@@ -104,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
             setTitle(getResources().getString(R.string.action_city1));
             lat = "33.749";
             lon = "-71.0583";
+            saveLocationToSharedPreferences(lat, lon);
             getCurrentWeather(lat, lon);
             return true;
         }
@@ -111,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
             setTitle(getResources().getString(R.string.action_city2));
             lat = "42.3603";
             lon = "-71.0583";
+            saveLocationToSharedPreferences(lat, lon);
             getCurrentWeather(lat, lon);
             return true;
         }
@@ -119,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
             setTitle(getResources().getString(R.string.action_city3));
             lat = "25.7743";
             lon = "-80.1937";
+            saveLocationToSharedPreferences(lat, lon);
             getCurrentWeather(lat, lon);
             return true;
         }
@@ -164,6 +197,33 @@ public class MainActivity extends AppCompatActivity {
                 Timber.d("Failure - %s", t.getMessage());
             }
         });
-
     }
+
+    public boolean isOnline() {
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        return (networkInfo != null && networkInfo.isConnected());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getLocationToSharedPreferences();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getLocationToSharedPreferences();
+    }
+
+    public void getLocationToSharedPreferences() {
+
+        // Get the Lat/Long
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        savedLat = preferences.getString(LAT_KEY, "33.749");
+        savedLon = preferences.getString(LONG_KEY, "-71.0583");
+    }
+
 }

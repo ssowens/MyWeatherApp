@@ -7,6 +7,7 @@ import java.util.List;
 import timber.log.Timber;
 
 import static com.ssowens.android.myweatherapp.ui.MainActivity.BASE_URL;
+import static com.ssowens.android.myweatherapp.ui.MainActivity.DEGREE_SYMBOL;
 import static com.ssowens.android.myweatherapp.ui.MainActivity.IMAGE_URL;
 
 /**
@@ -298,7 +299,7 @@ public class WeatherForecast {
         private Double tempKf;
 
         public String getTemp() {
-            return temp.toString();
+            return String.format("%.0f", temp) + DEGREE_SYMBOL;
         }
 
         public void setTemp(Double temp) {
@@ -306,7 +307,7 @@ public class WeatherForecast {
         }
 
         public String getTempMin() {
-            return tempMin.toString();
+            return String.format("%.0f", tempMin) + DEGREE_SYMBOL;
         }
 
         public void setTempMin(Double tempMin) {

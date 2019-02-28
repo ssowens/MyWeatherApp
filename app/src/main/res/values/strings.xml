@@ -8,4 +8,5 @@
     <string name="action_city1">Atlanta</string>
     <string name="action_city2">Boston</string>
     <string name="action_city3">Miami</string>
+    <string name="current_weather_notification">Current Weather Display</string>
 </resources>
