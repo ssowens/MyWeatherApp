@@ -113,19 +113,6 @@ public class ForecastActivity extends AppCompatActivity implements
         }
     }
 
-//    String dt_str = "2000-01-01T13:00:00.000Z";
-//    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-//try {
-//        Date date = simpleDateFormat.format("E, MMM dd yyyy HH:mm:ss");
-//        System.out.println(date);
-//    } catch (
-//    ParseException e) {
-//        // TODO Auto-generated catch block
-//        e.printStackTrace();
-//    }
-
-
-
     @Override
     public void onClick(long date) {
 

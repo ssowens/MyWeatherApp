@@ -21,8 +21,8 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
     private List<WeatherForecast.WeatherList> weatherList;
     private WeatherForecast weatherForecast;
 
-    public ForecastAdapter(ForecastAdapterOnClickHandler clickHandler,
-                           List<WeatherForecast.WeatherList> weatherForecast) {
+    ForecastAdapter(ForecastAdapterOnClickHandler clickHandler,
+                    List<WeatherForecast.WeatherList> weatherForecast) {
         this.clickHandler = clickHandler;
         this.weatherList= weatherForecast;
     }

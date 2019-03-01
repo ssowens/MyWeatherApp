@@ -16,7 +16,6 @@ object ApiFactory {
 
     val apiKey = BuildConfig.ApiKey
     val WEATHER_BASE_URL = "http://api.openweathermap.org/data/2.5/"
-    // City api.openweathermap.org/data/2.5/weather?q={city name}
 
 
     // Create Auth Interceptor to add api_key query in front of all the requests.
