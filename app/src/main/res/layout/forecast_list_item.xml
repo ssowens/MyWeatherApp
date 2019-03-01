@@ -64,7 +64,7 @@
                 android:layout_marginEnd="@dimen/forecast_temperature_space"
                 android:layout_marginRight="@dimen/forecast_temperature_space"
                 android:fontFamily="sans-serif-light"
-                android:text="@{model.main.temp}"
+                android:text="@{model.main.tempMax}"
                 android:textColor="@color/primary_text"
                 android:textSize="@dimen/forecast_text_size"
                 app:layout_constraintBottom_toTopOf="@+id/guideline"

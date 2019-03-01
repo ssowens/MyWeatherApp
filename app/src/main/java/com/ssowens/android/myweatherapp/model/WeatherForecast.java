@@ -326,8 +326,8 @@ public class WeatherForecast {
             this.tempMin = tempMin;
         }
 
-        public Double getTempMax() {
-            return tempMax;
+        public String getTempMax() {
+            return String.format("%.0f", tempMax) + DEGREE_SYMBOL;
         }
 
         public void setTempMax(Double tempMax) {
