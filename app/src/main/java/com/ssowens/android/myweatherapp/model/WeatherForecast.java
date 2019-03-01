@@ -469,7 +469,6 @@ public class WeatherForecast {
 //        @BindingAdapter("photoUrl")
         public String getIcon() {
             String iconUrl = BASE_URL + IMAGE_URL + icon;
-            Timber.d("Sheila forecast url %s", iconUrl);
             return iconUrl;
         }
 

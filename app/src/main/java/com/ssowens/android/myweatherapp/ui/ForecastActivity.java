@@ -48,7 +48,6 @@ public class ForecastActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        Timber.d("Sheila in second activity");
         lat = getIntent().getStringExtra(ARG_LAT);
         lon = getIntent().getStringExtra(ARG_LON);
         recyclerView = findViewById(R.id.recyclerview_forecast);
@@ -74,9 +73,6 @@ public class ForecastActivity extends AppCompatActivity implements
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         weatherForecast = response.body();
-                        Timber.d("Sheila Detail - WeatherForecast %s",
-                                response.body().toString());
-
                         convertData(weatherForecast);
                         forecastAdapter = new ForecastAdapter(clickHandler, weatherList);
                         forecastAdapter.notifyDataSetChanged();

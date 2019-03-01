@@ -13,4 +13,5 @@
     <string name="stop_polling">Stop Polling</string>
     <string name="new_weather_text">You have a weather update</string>
     <string name="new_weather_title">New Weather Update</string>
+    <string name="tap_for_detail">"Tap for detail view"</string>
 </resources>
