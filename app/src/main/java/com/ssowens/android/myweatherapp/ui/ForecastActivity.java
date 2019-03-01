@@ -8,7 +8,10 @@ import com.ssowens.android.myweatherapp.model.WeatherForecast;
 import com.ssowens.android.myweatherapp.model.WeatherResponseByCity;
 import com.ssowens.android.myweatherapp.service.WeatherApi;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -97,6 +100,29 @@ public class ForecastActivity extends AppCompatActivity implements
     private void convertData(WeatherForecast weatherForecast) {
         weatherList.addAll(weatherForecast.getList());
     }
+
+
+    SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
+    Date myDate;
+
+    {
+        try {
+            myDate = myFormat.parse("your date string here");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+//    String dt_str = "2000-01-01T13:00:00.000Z";
+//    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+//try {
+//        Date date = simpleDateFormat.format("E, MMM dd yyyy HH:mm:ss");
+//        System.out.println(date);
+//    } catch (
+//    ParseException e) {
+//        // TODO Auto-generated catch block
+//        e.printStackTrace();
+//    }
 
 
 

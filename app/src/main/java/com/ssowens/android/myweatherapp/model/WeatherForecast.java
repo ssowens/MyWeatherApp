@@ -2,6 +2,9 @@ package com.ssowens.android.myweatherapp.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import timber.log.Timber;
@@ -250,7 +253,16 @@ public class WeatherForecast {
         }
 
         public String getDtTxt() {
-            return dtTxt;
+            SimpleDateFormat myFormat = new SimpleDateFormat("E, yyyy-MM-dd");
+            {
+                try {
+                    Date myDate = myFormat.parse(dtTxt);
+                    dtTxt = myDate.toString();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                return dtTxt;
+            }
         }
 
         public void setDtTxt(String dtTxt) {
@@ -433,7 +445,7 @@ public class WeatherForecast {
             this.main = main;
         }
 
-//                if (getOffers() != null) {
+        //                if (getOffers() != null) {
 //            if (!TextUtils.isEmpty(getOffers().get(0).getGuests().getAdults()))
 //                return getOffers().get(0).getGuests().getAdults() + " " + "guests";
 //        }
@@ -448,7 +460,7 @@ public class WeatherForecast {
             this.description = description;
         }
 
-//        @BindingAdapter("photoUrl")
+        //        @BindingAdapter("photoUrl")
 //        public static void loadImage(ImageView view, String photoUrl) {
 //            Glide.with(view.getContext())
 //                    .load(photoUrl)

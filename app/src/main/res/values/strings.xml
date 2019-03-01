@@ -9,4 +9,8 @@
     <string name="action_city2">Boston</string>
     <string name="action_city3">Miami</string>
     <string name="current_weather_notification">Current Weather Display</string>
+    <string name="start_polling">Start Polling</string>
+    <string name="stop_polling">Stop Polling</string>
+    <string name="new_weather_text">You have a weather update</string>
+    <string name="new_weather_title">New Weather Update</string>
 </resources>

@@ -40,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/list_item_date_start_margin"
-                android:text="Today, February 27"
+                android:text="@{model.dtTxt}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                 app:layout_constraintBottom_toTopOf="@+id/guideline"
                 app:layout_constraintLeft_toRightOf="@+id/weather_icon"

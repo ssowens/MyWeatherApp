@@ -13,4 +13,8 @@
         android:id="@+id/action_city3"
         android:title="@string/action_city3"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_toggle_polling"
+        android:title="@string/start_polling"
+        app:showAsAction="never"/>
 </menu>

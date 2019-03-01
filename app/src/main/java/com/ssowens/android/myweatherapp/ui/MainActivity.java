@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.ssowens.android.myweatherapp.BuildConfig;
 import com.ssowens.android.myweatherapp.R;
 import com.ssowens.android.myweatherapp.model.WeatherResponseByCity;
+import com.ssowens.android.myweatherapp.service.PollService;
 import com.ssowens.android.myweatherapp.service.WeatherApi;
 
 import java.text.DateFormat;
@@ -34,6 +35,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import timber.log.Timber;
 
+import static com.ssowens.android.myweatherapp.utils.LocationPreferences.LAT_KEY;
+import static com.ssowens.android.myweatherapp.utils.LocationPreferences.LONG_KEY;
+
 /**
  * Created by Sheila Owens on 2/24/19.
  */
@@ -45,8 +49,6 @@ public class MainActivity extends AppCompatActivity {
     public static String DEGREE_SYMBOL = "\u00b0";
     public static final String ARG_LAT = "lat";
     public static final String ARG_LON = "lon";
-    public static final String LAT_KEY = "mylat";
-    public static final String LONG_KEY = "mylong";
     public String savedLat;
     public String savedLon;
 
@@ -83,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         if (isOnline()) {
+            PollService.setServiceAlarm(getApplicationContext(), true);
             getCurrentWeather(lat, lon);
             Toast.makeText(getApplicationContext(), "Current Weather displayed",
                     Toast.LENGTH_SHORT).show();
@@ -102,6 +105,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public static Intent newIntent(Context context) {
+        return new Intent(context, MainActivity.class);
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -117,10 +124,25 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
     }
 
+
+    public void getLocationToSharedPreferences() {
+
+        // Get the Lat/Long
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        savedLat = preferences.getString(LAT_KEY, "33.749");
+        savedLon = preferences.getString(LONG_KEY, "-71.0583");
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_location, menu);
+
+        MenuItem toggleItem = menu.findItem(R.id.action_toggle_polling);
+        if (PollService.isServiceAlarmOn(getApplicationContext())) {
+            toggleItem.setTitle(R.string.stop_polling);
+        } else
+            toggleItem.setTitle(R.string.start_polling);
         return super.onCreateOptionsMenu(menu);
 
     }
@@ -128,34 +150,38 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-        if (id == R.id.action_city1) {
-            // Atlanta
-            setTitle(getResources().getString(R.string.action_city1));
-            lat = "33.749";
-            lon = "-71.0583";
-            saveLocationToSharedPreferences(lat, lon);
-            getCurrentWeather(lat, lon);
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_city1:
+                // Atlanta
+                setTitle(getResources().getString(R.string.action_city1));
+                lat = "33.749";
+                lon = "-71.0583";
+                getCurrentWeather(lat, lon);
+                return true;
+            case R.id.action_city2:
+                //Boston
+                setTitle(getResources().getString(R.string.action_city2));
+                lat = "42.3603";
+                lon = "-71.0583";
+                saveLocationToSharedPreferences(lat, lon);
+                getCurrentWeather(lat, lon);
+                return true;
+            case R.id.action_city3:
+                //Miami
+                setTitle(getResources().getString(R.string.action_city3));
+                lat = "25.7743";
+                lon = "-80.1937";
+                saveLocationToSharedPreferences(lat, lon);
+                getCurrentWeather(lat, lon);
+                return true;
+            case R.id.action_toggle_polling:
+                boolean shouldStartAlarm = !PollService.isServiceAlarmOn(getApplicationContext());
+                PollService.setServiceAlarm(getApplicationContext(), shouldStartAlarm);
+                invalidateOptionsMenu();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        if (id == R.id.action_city2) {
-            setTitle(getResources().getString(R.string.action_city2));
-            lat = "42.3603";
-            lon = "-71.0583";
-            saveLocationToSharedPreferences(lat, lon);
-            getCurrentWeather(lat, lon);
-            return true;
-        }
-        if (id == R.id.action_city3) {
-            //Miama
-            setTitle(getResources().getString(R.string.action_city3));
-            lat = "25.7743";
-            lon = "-80.1937";
-            saveLocationToSharedPreferences(lat, lon);
-            getCurrentWeather(lat, lon);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     public void getCurrentWeather(String lat, String lon) {
@@ -218,12 +244,5 @@ public class MainActivity extends AppCompatActivity {
         getLocationToSharedPreferences();
     }
 
-    public void getLocationToSharedPreferences() {
-
-        // Get the Lat/Long
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        savedLat = preferences.getString(LAT_KEY, "33.749");
-        savedLon = preferences.getString(LONG_KEY, "-71.0583");
-    }
 
 }
