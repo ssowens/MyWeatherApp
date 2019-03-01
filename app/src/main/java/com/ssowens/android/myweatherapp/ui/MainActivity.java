@@ -87,11 +87,8 @@ public class MainActivity extends AppCompatActivity {
         if (isOnline()) {
             PollService.setServiceAlarm(getApplicationContext(), true);
             getCurrentWeather(lat, lon);
-            Toast.makeText(getApplicationContext(), "Current Weather displayed",
-                    Toast.LENGTH_SHORT).show();
 
             main_constraint_layout.setOnClickListener(v -> {
-                Toast.makeText(getApplicationContext(), "This is the current weather", Toast.LENGTH_SHORT).show();
                 Intent weatherDetailIntent = new Intent(MainActivity.this, ForecastActivity.class);
                 weatherDetailIntent.putExtra(ARG_LAT, lat);
                 weatherDetailIntent.putExtra(ARG_LON, lon);
