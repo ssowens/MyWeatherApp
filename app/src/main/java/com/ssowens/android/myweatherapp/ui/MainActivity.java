@@ -207,8 +207,8 @@ public class MainActivity extends AppCompatActivity {
                         String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
                         currentDate.setText(currentDateTimeString);
                         weatherDesciption.setText(byCity.getWeather().get(0).getMain());
-                        highTemperature.setText(String.format("%.0f", byCity.getMain().temp) + DEGREE_SYMBOL);
-                        lowTemperature.setText(String.format("%.0f", byCity.getMain().temp_min) + DEGREE_SYMBOL);
+                        highTemperature.setText(String.format("%.0f", byCity.getMain().getTemp()) + DEGREE_SYMBOL);
+                        lowTemperature.setText(String.format("%.0f", byCity.getMain().getTemp_min()) + DEGREE_SYMBOL);
                         String url =
                                 BASE_URL + IMAGE_URL + byCity.getWeather().get(0).getIcon() +
                                         PNG_EXT;

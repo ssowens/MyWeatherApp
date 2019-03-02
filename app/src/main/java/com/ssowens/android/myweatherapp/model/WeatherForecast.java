@@ -7,8 +7,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import timber.log.Timber;
-
 import static com.ssowens.android.myweatherapp.ui.MainActivity.BASE_URL;
 import static com.ssowens.android.myweatherapp.ui.MainActivity.DEGREE_SYMBOL;
 import static com.ssowens.android.myweatherapp.ui.MainActivity.IMAGE_URL;
@@ -445,13 +443,6 @@ public class WeatherForecast {
             this.main = main;
         }
 
-        //                if (getOffers() != null) {
-//            if (!TextUtils.isEmpty(getOffers().get(0).getGuests().getAdults()))
-//                return getOffers().get(0).getGuests().getAdults() + " " + "guests";
-//        }
-//        return "0";
-//    }
-//
         public String getDescription() {
             return description;
         }
@@ -460,13 +451,6 @@ public class WeatherForecast {
             this.description = description;
         }
 
-        //        @BindingAdapter("photoUrl")
-//        public static void loadImage(ImageView view, String photoUrl) {
-//            Glide.with(view.getContext())
-//                    .load(photoUrl)
-//                    .into(view);
-//        }
-//        @BindingAdapter("photoUrl")
         public String getIcon() {
             String iconUrl = BASE_URL + IMAGE_URL + icon;
             return iconUrl;
