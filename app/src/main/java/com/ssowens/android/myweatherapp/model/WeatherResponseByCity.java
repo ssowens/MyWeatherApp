@@ -3,6 +3,7 @@ package com.ssowens.android.myweatherapp.model;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Sheila Owens on 2/25/19.
@@ -13,7 +14,7 @@ public class WeatherResponseByCity {
     @SerializedName("sys")
     public Sys sys;
     @SerializedName("weather")
-    public ArrayList<Weather> weather = new ArrayList<Weather>();
+    public List<Weather> weather = new ArrayList<>();
     @SerializedName("main")
     public Main main;
     @SerializedName("wind")
@@ -47,11 +48,11 @@ public class WeatherResponseByCity {
         this.sys = sys;
     }
 
-    public ArrayList<Weather> getWeather() {
+    public List<Weather> getWeather() {
         return weather;
     }
 
-    public void setWeather(ArrayList<Weather> weather) {
+    public void setWeather(List<Weather> weather) {
         this.weather = weather;
     }
 
