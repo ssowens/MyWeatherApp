@@ -8,10 +8,7 @@ import com.ssowens.android.myweatherapp.model.WeatherForecast;
 import com.ssowens.android.myweatherapp.model.WeatherResponseByCity;
 import com.ssowens.android.myweatherapp.service.WeatherApi;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,14 +23,15 @@ import timber.log.Timber;
 
 import static com.ssowens.android.myweatherapp.ui.MainActivity.ARG_LAT;
 import static com.ssowens.android.myweatherapp.ui.MainActivity.ARG_LON;
+import static com.ssowens.android.myweatherapp.ui.MainActivity.ATL_LAT;
+import static com.ssowens.android.myweatherapp.ui.MainActivity.ATL_LON;
 import static com.ssowens.android.myweatherapp.ui.MainActivity.BASE_URL;
 
 public class ForecastActivity extends AppCompatActivity implements
         ForecastAdapter.ForecastAdapterOnClickHandler {
 
-    // For Atlanta - Testing ONLY
-    public String lat = "33.935101";
-    public String lon = "-84.360924";
+    public String lat = "";
+    public String lon = "";
     public String AppId = BuildConfig.ApiKey;
     public static String IMPERIAL = "imperial";
     WeatherResponseByCity byCity;
@@ -55,9 +53,7 @@ public class ForecastActivity extends AppCompatActivity implements
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        getWeatherForcast(lat, lon, clickHandler);
-
-
+        getWeatherForcast(ATL_LAT, ATL_LON, clickHandler);
     }
 
     public void getWeatherForcast(String lat, String lon, ForecastAdapter.ForecastAdapterOnClickHandler clickHandler) {
@@ -77,9 +73,6 @@ public class ForecastActivity extends AppCompatActivity implements
                         forecastAdapter = new ForecastAdapter(clickHandler, weatherList);
                         forecastAdapter.notifyDataSetChanged();
                         recyclerView.setAdapter(forecastAdapter);
-
-
-
                     }
                 } else {
                     Timber.d("Returned empty response");
@@ -95,18 +88,6 @@ public class ForecastActivity extends AppCompatActivity implements
 
     private void convertData(WeatherForecast weatherForecast) {
         weatherList.addAll(weatherForecast.getList());
-    }
-
-
-    SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
-    Date myDate;
-
-    {
-        try {
-            myDate = myFormat.parse("your date string here");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override

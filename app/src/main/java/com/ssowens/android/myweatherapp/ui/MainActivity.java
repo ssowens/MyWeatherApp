@@ -46,6 +46,14 @@ public class MainActivity extends AppCompatActivity {
     public static String BASE_URL = "http://api.openweathermap.org/";
     public static String IMAGE_URL = "img/w/";
     public static String PNG_EXT = ".png";
+
+    public static String ATL_LAT = "33.749";
+    public static String ATL_LON = "-84.360924";
+    public static String BOSTON_LAT = "42.3603";
+    public static String BOSTON_LON = "-71.0583";
+    public static String MIAMI_LAT = "25.7743";
+    public static String MIAMI_LON = "-80.1937";
+
     public static String DEGREE_SYMBOL = "\u00b0";
     public static final String ARG_LAT = "lat";
     public static final String ARG_LON = "lon";
@@ -151,23 +159,23 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_city1:
                 // Atlanta
                 setTitle(getResources().getString(R.string.action_city1));
-                lat = "33.749";
-                lon = "-71.0583";
+                lat = ATL_LAT;
+                lon = ATL_LON;
                 getCurrentWeather(lat, lon);
                 return true;
             case R.id.action_city2:
                 //Boston
                 setTitle(getResources().getString(R.string.action_city2));
-                lat = "42.3603";
-                lon = "-71.0583";
+                lat = BOSTON_LAT;
+                lon = BOSTON_LON;
                 saveLocationToSharedPreferences(lat, lon);
                 getCurrentWeather(lat, lon);
                 return true;
             case R.id.action_city3:
                 //Miami
                 setTitle(getResources().getString(R.string.action_city3));
-                lat = "25.7743";
-                lon = "-80.1937";
+                lat = MIAMI_LAT;
+                lon = MIAMI_LON;
                 saveLocationToSharedPreferences(lat, lon);
                 getCurrentWeather(lat, lon);
                 return true;
