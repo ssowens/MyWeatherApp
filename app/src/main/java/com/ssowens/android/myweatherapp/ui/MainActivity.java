@@ -24,6 +24,7 @@ import com.ssowens.android.myweatherapp.service.WeatherApi;
 import java.text.DateFormat;
 import java.util.Date;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
@@ -57,9 +58,8 @@ public class MainActivity extends AppCompatActivity {
     public static String DEGREE_SYMBOL = "\u00b0";
     public static final String ARG_LAT = "lat";
     public static final String ARG_LON = "lon";
-    public String savedLat;
-    public String savedLon;
-
+    public static final String KEY_LAT = "lat";
+    public static final String KEY_LON = "lon";
 
     public String UNITS = "imperial";
     public String AppId = BuildConfig.ApiKey;
@@ -92,6 +92,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        if (savedInstanceState != null) {
+            lat = savedInstanceState.getString(KEY_LAT, "No Lat");
+            lon = savedInstanceState.getString(KEY_LON, "No Lon");
+        } else getLocationToSharedPreferences();
+
         if (isOnline()) {
             PollService.setServiceAlarm(getApplicationContext(), true);
             getCurrentWeather(lat, lon);
@@ -101,12 +106,10 @@ public class MainActivity extends AppCompatActivity {
                 weatherDetailIntent.putExtra(ARG_LAT, lat);
                 weatherDetailIntent.putExtra(ARG_LON, lon);
                 startActivity(weatherDetailIntent);
-
             });
         } else {
             Toast.makeText(getApplicationContext(), "No Internet Connectivity",
                     Toast.LENGTH_SHORT).show();
-
         }
     }
 
@@ -115,9 +118,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-
+    protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putString(KEY_LAT, lat);
+        savedInstanceState.putString(KEY_LON, lon);
     }
 
     public void saveLocationToSharedPreferences(String myLat, String myLon) {
@@ -129,13 +133,12 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
     }
 
-
     public void getLocationToSharedPreferences() {
 
         // Get the Lat/Long
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        savedLat = preferences.getString(LAT_KEY, "33.749");
-        savedLon = preferences.getString(LONG_KEY, "-71.0583");
+        lat = preferences.getString(LAT_KEY, "No Lat");
+        lon = preferences.getString(LONG_KEY, "No Lon");
     }
 
     @Override
@@ -149,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
         } else
             toggleItem.setTitle(R.string.start_polling);
         return super.onCreateOptionsMenu(menu);
-
     }
 
     @Override
@@ -161,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
                 setTitle(getResources().getString(R.string.action_city1));
                 lat = ATL_LAT;
                 lon = ATL_LON;
+                saveLocationToSharedPreferences(lat, lon);
                 getCurrentWeather(lat, lon);
                 return true;
             case R.id.action_city2:
@@ -249,5 +252,9 @@ public class MainActivity extends AppCompatActivity {
         getLocationToSharedPreferences();
     }
 
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveLocationToSharedPreferences(lat, lon);
+    }
 }

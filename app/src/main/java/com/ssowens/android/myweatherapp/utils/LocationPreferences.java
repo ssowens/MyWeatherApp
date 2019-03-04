@@ -12,8 +12,6 @@ public class LocationPreferences {
     public static final String LAT_KEY = "mylat";
     public static final String LONG_KEY = "mylong";
     private static final String PREF_LAST_RESULT_ID = "lastResultId";
-    private static final String DEF_LAT = "33.749";
-    private static final String DEF_LON = "-71.0583";
 
     public String getLastResultId(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

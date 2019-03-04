@@ -218,37 +218,37 @@ public class WeatherForecast {
             this.weather = weather;
         }
 
-        public Clouds getClouds() {
-            return clouds;
-        }
-
-        public void setClouds(Clouds clouds) {
-            this.clouds = clouds;
-        }
-
-        public Wind getWind() {
-            return wind;
-        }
-
-        public void setWind(Wind wind) {
-            this.wind = wind;
-        }
-
-        public Snow getSnow() {
-            return snow;
-        }
-
-        public void setSnow(Snow snow) {
-            this.snow = snow;
-        }
-
-        public Sys getSys() {
-            return sys;
-        }
-
-        public void setSys(Sys sys) {
-            this.sys = sys;
-        }
+//        public Clouds getClouds() {
+//            return clouds;
+//        }
+//
+//        public void setClouds(Clouds clouds) {
+//            this.clouds = clouds;
+//        }
+//
+//        public Wind getWind() {
+//            return wind;
+//        }
+//
+//        public void setWind(Wind wind) {
+//            this.wind = wind;
+//        }
+//
+//        public Snow getSnow() {
+//            return snow;
+//        }
+//
+//        public void setSnow(Snow snow) {
+//            this.snow = snow;
+//        }
+//
+//        public Sys getSys() {
+//            return sys;
+//        }
+//
+//        public void setSys(Sys sys) {
+//            this.sys = sys;
+//        }
 
         public String getDtTxt() {
             SimpleDateFormat myFormat = new SimpleDateFormat("E, yyyy-MM-dd");

@@ -1,6 +1,8 @@
 package com.ssowens.android.myweatherapp.ui;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 import com.ssowens.android.myweatherapp.BuildConfig;
 import com.ssowens.android.myweatherapp.R;
@@ -11,6 +13,7 @@ import com.ssowens.android.myweatherapp.service.WeatherApi;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +29,8 @@ import static com.ssowens.android.myweatherapp.ui.MainActivity.ARG_LON;
 import static com.ssowens.android.myweatherapp.ui.MainActivity.ATL_LAT;
 import static com.ssowens.android.myweatherapp.ui.MainActivity.ATL_LON;
 import static com.ssowens.android.myweatherapp.ui.MainActivity.BASE_URL;
+import static com.ssowens.android.myweatherapp.ui.MainActivity.KEY_LAT;
+import static com.ssowens.android.myweatherapp.ui.MainActivity.KEY_LON;
 
 public class ForecastActivity extends AppCompatActivity implements
         ForecastAdapter.ForecastAdapterOnClickHandler {
@@ -46,14 +51,28 @@ public class ForecastActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        lat = getIntent().getStringExtra(ARG_LAT);
-        lon = getIntent().getStringExtra(ARG_LON);
+
+        if (getIntent() != null) {
+            lat = getIntent().getStringExtra(ARG_LAT);
+            lon = getIntent().getStringExtra(ARG_LON);
+        } else if (savedInstanceState != null) {
+            lat = savedInstanceState.getString(KEY_LAT, ATL_LAT);
+            lon = savedInstanceState.getString(KEY_LON, ATL_LON);
+        } else loadLatLonSharedPreferences();
+
         recyclerView = findViewById(R.id.recyclerview_forecast);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        getWeatherForcast(ATL_LAT, ATL_LON, clickHandler);
+        getWeatherForcast(lat, lon, clickHandler);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putString(KEY_LAT, lat);
+        savedInstanceState.putString(KEY_LON, lon);
     }
 
     public void getWeatherForcast(String lat, String lon, ForecastAdapter.ForecastAdapterOnClickHandler clickHandler) {
@@ -71,8 +90,8 @@ public class ForecastActivity extends AppCompatActivity implements
                         weatherForecast = response.body();
                         convertData(weatherForecast);
                         forecastAdapter = new ForecastAdapter(clickHandler, weatherList);
-                        forecastAdapter.notifyDataSetChanged();
                         recyclerView.setAdapter(forecastAdapter);
+                        forecastAdapter.notifyDataSetChanged();
                     }
                 } else {
                     Timber.d("Returned empty response");
@@ -87,6 +106,7 @@ public class ForecastActivity extends AppCompatActivity implements
     }
 
     private void convertData(WeatherForecast weatherForecast) {
+        weatherList.clear();
         weatherList.addAll(weatherForecast.getList());
     }
 
@@ -98,5 +118,38 @@ public class ForecastActivity extends AppCompatActivity implements
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Get the Lat/Long
+        loadLatLonSharedPreferences();
+    }
+
+    private void loadLatLonSharedPreferences() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        lat = preferences.getString(KEY_LAT, "No Lat");
+        lon = preferences.getString(KEY_LON, "No Lon");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveLatLonSharedPreferences();
+    }
+
+    @Override
+    public void onBackPressed() {
+        saveLatLonSharedPreferences();
+        super.onBackPressed();
+    }
+
+    private void saveLatLonSharedPreferences() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(KEY_LAT, lat);
+        editor.putString(KEY_LON, lon);
+        editor.apply();
     }
 }
