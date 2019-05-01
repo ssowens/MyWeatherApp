@@ -6,6 +6,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+
+import timber.log.Timber;
 
 import static com.ssowens.android.myweatherapp.ui.MainActivity.BASE_URL;
 import static com.ssowens.android.myweatherapp.ui.MainActivity.DEGREE_SYMBOL;
@@ -175,7 +179,7 @@ public class WeatherForecast {
         }
     }
 
-    public class WeatherList {
+    public class WeatherList implements Comparable {
 
         @SerializedName("dt")
         private Integer dt;
@@ -218,53 +222,19 @@ public class WeatherForecast {
             this.weather = weather;
         }
 
-//        public Clouds getClouds() {
-//            return clouds;
-//        }
-//
-//        public void setClouds(Clouds clouds) {
-//            this.clouds = clouds;
-//        }
-//
-//        public Wind getWind() {
-//            return wind;
-//        }
-//
-//        public void setWind(Wind wind) {
-//            this.wind = wind;
-//        }
-//
-//        public Snow getSnow() {
-//            return snow;
-//        }
-//
-//        public void setSnow(Snow snow) {
-//            this.snow = snow;
-//        }
-//
-//        public Sys getSys() {
-//            return sys;
-//        }
-//
-//        public void setSys(Sys sys) {
-//            this.sys = sys;
-//        }
-
         public String getDtTxt() {
-            SimpleDateFormat myFormat = new SimpleDateFormat("E, yyyy-MM-dd");
+            SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
             {
                 try {
                     Date myDate = myFormat.parse(dtTxt);
-                    dtTxt = myDate.toString();
+                    dtTxt = myDate.toString().substring(0,10);
+                    Timber.d("Sheila day format %s", myDate);
                 } catch (ParseException e) {
                     e.printStackTrace();
+                    Timber.e(e,"Problem encountered when parsing date: %s", dtTxt);
                 }
                 return dtTxt;
             }
-        }
-
-        public void setDtTxt(String dtTxt) {
-            this.dtTxt = dtTxt;
         }
 
         public String getDescription() {
@@ -286,6 +256,24 @@ public class WeatherForecast {
                     ", sys=" + sys +
                     ", dtTxt='" + dtTxt + '\'' +
                     '}';
+        }
+
+        @Override
+        public int compareTo(Object o) {
+            return this.getDtTxt().compareTo(((WeatherList) o).getDtTxt());
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            WeatherList that = (WeatherList) o;
+            return dtTxt.substring(0,10).equals(that.dtTxt.substring(0,10));
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(dtTxt);
         }
     }
 

@@ -11,7 +11,9 @@ import com.ssowens.android.myweatherapp.model.WeatherResponseByCity;
 import com.ssowens.android.myweatherapp.service.WeatherApi;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,7 +46,7 @@ public class ForecastActivity extends AppCompatActivity implements
     private ForecastAdapter.ForecastAdapterOnClickHandler clickHandler;
 
     public ForecastAdapter forecastAdapter;
-    private List<WeatherForecast.WeatherList> weatherList = new ArrayList<>();
+    private List<WeatherForecast.WeatherList> weatherList = new ArrayList<WeatherForecast.WeatherList>();
     RecyclerView recyclerView;
 
     @Override
@@ -106,8 +108,21 @@ public class ForecastActivity extends AppCompatActivity implements
     }
 
     private void convertData(WeatherForecast weatherForecast) {
-        weatherList.clear();
+
+//        Set setItems = new LinkedHashSet(list);
+//        list.clear();
+//        list.addAll(setItems);
+
         weatherList.addAll(weatherForecast.getList());
+        Set setItems = new LinkedHashSet(weatherList);
+        weatherList.clear();
+        weatherList.addAll(setItems);
+
+//        weatherList.clear();
+//        weatherList.addAll(weatherForecast.getList());
+//        Collections.sort(weatherList);
+//        Timber.i("Sheila");
+//        Timber.i(weatherList.toString());
     }
 
     @Override

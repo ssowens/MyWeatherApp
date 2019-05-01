@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         } else getLocationToSharedPreferences();
 
         if (isOnline()) {
-            PollService.setServiceAlarm(getApplicationContext(), true);
+            PollService.setServiceAlarm(this, true);
             getCurrentWeather(lat, lon);
 
             main_constraint_layout.setOnClickListener(v -> {
@@ -156,7 +156,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
         switch (item.getItemId()) {
             case R.id.action_city1:
                 // Atlanta
@@ -183,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
                 getCurrentWeather(lat, lon);
                 return true;
             case R.id.action_toggle_polling:
-                boolean shouldStartAlarm = !PollService.isServiceAlarmOn(getApplicationContext());
+                boolean shouldStartAlarm = !PollService.isServiceAlarmOn(this);
                 PollService.setServiceAlarm(getApplicationContext(), shouldStartAlarm);
                 invalidateOptionsMenu();
                 return true;
