@@ -27,6 +27,7 @@ import java.util.Date;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -93,8 +94,8 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         if (savedInstanceState != null) {
-            lat = savedInstanceState.getString(KEY_LAT, "No Lat");
-            lon = savedInstanceState.getString(KEY_LON, "No Lon");
+            lat = savedInstanceState.getString(KEY_LAT);
+            lon = savedInstanceState.getString(KEY_LON);
         } else getLocationToSharedPreferences();
 
         if (isOnline()) {
@@ -137,8 +138,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Get the Lat/Long
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        lat = preferences.getString(LAT_KEY, "No Lat");
-        lon = preferences.getString(LONG_KEY, "No Lon");
+        lat = preferences.getString(LAT_KEY, ATL_LAT);
+        lon = preferences.getString(LONG_KEY, ATL_LON);
     }
 
     @Override
@@ -205,20 +206,7 @@ public class MainActivity extends AppCompatActivity {
                     if (response.body() != null) {
                         byCity = response.body();
                         Timber.d("weatherRespBycity %s", response.body().toString());
-
-                        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-                        currentDate.setText(currentDateTimeString);
-                        weatherDesciption.setText(byCity.getWeather().get(0).getMain());
-                        highTemperature.setText(String.format("%.0f", byCity.getMain().getTemp()) + DEGREE_SYMBOL);
-                        lowTemperature.setText(String.format("%.0f", byCity.getMain().getTemp_min()) + DEGREE_SYMBOL);
-                        String url =
-                                BASE_URL + IMAGE_URL + byCity.getWeather().get(0).getIcon() +
-                                        PNG_EXT;
-                        Glide
-                                .with(getApplicationContext())
-                                .load(url)
-                                .into(weatherIcon);
-
+                        setupUI();
                     }
                 } else {
                     Timber.d("Returned empty response");
@@ -230,6 +218,21 @@ public class MainActivity extends AppCompatActivity {
                 Timber.d("Failure - %s", t.getMessage());
             }
         });
+    }
+
+    private void setupUI() {
+        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+        currentDate.setText(currentDateTimeString);
+        weatherDesciption.setText(byCity.getWeather().get(0).getMain());
+        highTemperature.setText(String.format("%.0f", byCity.getMain().getTemp()) + DEGREE_SYMBOL);
+        lowTemperature.setText(String.format("%.0f", byCity.getMain().getTemp_min()) + DEGREE_SYMBOL);
+        String url =
+                BASE_URL + IMAGE_URL + byCity.getWeather().get(0).getIcon() +
+                        PNG_EXT;
+        Glide
+                .with(getApplicationContext())
+                .load(url)
+                .into(weatherIcon);
     }
 
     public boolean isOnline() {

@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -46,7 +47,8 @@ public class ForecastActivity extends AppCompatActivity implements
     private ForecastAdapter.ForecastAdapterOnClickHandler clickHandler;
 
     public ForecastAdapter forecastAdapter;
-    private List<WeatherForecast.WeatherList> weatherList = new ArrayList<WeatherForecast.WeatherList>();
+    private List<WeatherForecast.WeatherList> weatherList = new ArrayList<>();
+    private List<WeatherForecast.WeatherList> myTestList = new ArrayList<>();
     RecyclerView recyclerView;
 
     @Override
@@ -109,20 +111,16 @@ public class ForecastActivity extends AppCompatActivity implements
 
     private void convertData(WeatherForecast weatherForecast) {
 
-//        Set setItems = new LinkedHashSet(list);
-//        list.clear();
-//        list.addAll(setItems);
-
         weatherList.addAll(weatherForecast.getList());
-        Set setItems = new LinkedHashSet(weatherList);
+        for (int i = 0; i < weatherList.size() - 1; i++) {
+            Timber.i("This is the date %s", weatherList.get(i).getDtTxt());
+            if (!weatherList.get(i).getDtTxt().substring(0, 10).equals(weatherList.get(i + 1).getDtTxt().substring(0, 10))) {
+                myTestList.add(weatherList.get(i));
+            }
+        }
+        Timber.i("Size of myTestList %s", myTestList.size());
         weatherList.clear();
-        weatherList.addAll(setItems);
-
-//        weatherList.clear();
-//        weatherList.addAll(weatherForecast.getList());
-//        Collections.sort(weatherList);
-//        Timber.i("Sheila");
-//        Timber.i(weatherList.toString());
+        weatherList.addAll(myTestList);
     }
 
     @Override
@@ -144,8 +142,8 @@ public class ForecastActivity extends AppCompatActivity implements
 
     private void loadLatLonSharedPreferences() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        lat = preferences.getString(KEY_LAT, "No Lat");
-        lon = preferences.getString(KEY_LON, "No Lon");
+        lat = preferences.getString(KEY_LAT, ATL_LAT);
+        lon = preferences.getString(KEY_LON, ATL_LON);
     }
 
     @Override

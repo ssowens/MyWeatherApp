@@ -2,6 +2,7 @@ package com.ssowens.android.myweatherapp.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -223,17 +224,18 @@ public class WeatherForecast {
         }
 
         public String getDtTxt() {
+            String formattedString = "";
             SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
             {
                 try {
                     Date myDate = myFormat.parse(dtTxt);
-                    dtTxt = myDate.toString().substring(0,10);
                     Timber.d("Sheila day format %s", myDate);
+                    formattedString = myDate.toString().substring(0,10);
                 } catch (ParseException e) {
                     e.printStackTrace();
-                    Timber.e(e,"Problem encountered when parsing date: %s", dtTxt);
+                    Timber.e(e, "Problem encountered when parsing date: %s", dtTxt);
                 }
-                return dtTxt;
+                return formattedString;
             }
         }
 
@@ -268,7 +270,7 @@ public class WeatherForecast {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             WeatherList that = (WeatherList) o;
-            return dtTxt.substring(0,10).equals(that.dtTxt.substring(0,10));
+            return dtTxt.substring(0, 10).equals(that.dtTxt.substring(0, 10));
         }
 
         @Override
