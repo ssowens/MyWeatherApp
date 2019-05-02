@@ -20,6 +20,7 @@ import com.ssowens.android.myweatherapp.R;
 import com.ssowens.android.myweatherapp.model.WeatherResponseByCity;
 import com.ssowens.android.myweatherapp.service.PollService;
 import com.ssowens.android.myweatherapp.service.WeatherApi;
+import com.ssowens.android.myweatherapp.viewmodels.MainActivityViewModel;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -27,6 +28,8 @@ import java.util.Date;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -84,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.current_weather_layout)
     ConstraintLayout main_constraint_layout;
 
+    private MainActivityViewModel mainActivityViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        mainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
 
         if (savedInstanceState != null) {
             lat = savedInstanceState.getString(KEY_LAT);

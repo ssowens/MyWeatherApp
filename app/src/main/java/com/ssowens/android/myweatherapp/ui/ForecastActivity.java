@@ -3,23 +3,27 @@ package com.ssowens.android.myweatherapp.ui;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.View;
+import android.widget.ProgressBar;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.ssowens.android.myweatherapp.BuildConfig;
 import com.ssowens.android.myweatherapp.R;
 import com.ssowens.android.myweatherapp.model.WeatherForecast;
 import com.ssowens.android.myweatherapp.model.WeatherResponseByCity;
 import com.ssowens.android.myweatherapp.service.WeatherApi;
+import com.ssowens.android.myweatherapp.viewmodels.ForecastActivityViewModel;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -49,12 +53,21 @@ public class ForecastActivity extends AppCompatActivity implements
     public ForecastAdapter forecastAdapter;
     private List<WeatherForecast.WeatherList> weatherList = new ArrayList<>();
     private List<WeatherForecast.WeatherList> myTestList = new ArrayList<>();
+
+    @BindView(R.id.recyclerview_forecast)
     RecyclerView recyclerView;
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
+
+    private ForecastActivityViewModel forecastActivityViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        ButterKnife.bind(this);
+
+        forecastActivityViewModel = ViewModelProviders.of(this).get(ForecastActivityViewModel.class);
 
         if (getIntent() != null) {
             lat = getIntent().getStringExtra(ARG_LAT);
@@ -64,12 +77,19 @@ public class ForecastActivity extends AppCompatActivity implements
             lon = savedInstanceState.getString(KEY_LON, ATL_LON);
         } else loadLatLonSharedPreferences();
 
-        recyclerView = findViewById(R.id.recyclerview_forecast);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         getWeatherForcast(lat, lon, clickHandler);
+    }
+
+    private void showProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void hideProgressBar() {
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
