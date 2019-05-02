@@ -46,5 +46,5 @@
           android:state_focused="true"/>
 
     <!-- Default state with no interaction -->
-    <item android:drawable="@color/background_material_light"/>
+    <item android:drawable="@color/colorPrimaryLight"/>
 </selector>
