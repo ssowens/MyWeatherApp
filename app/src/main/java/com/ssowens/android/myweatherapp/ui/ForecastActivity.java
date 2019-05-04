@@ -16,6 +16,7 @@ import com.ssowens.android.myweatherapp.BuildConfig;
 import com.ssowens.android.myweatherapp.R;
 import com.ssowens.android.myweatherapp.model.WeatherForecast;
 import com.ssowens.android.myweatherapp.model.WeatherResponseByCity;
+import com.ssowens.android.myweatherapp.service.ServiceGenerator;
 import com.ssowens.android.myweatherapp.service.WeatherApi;
 import com.ssowens.android.myweatherapp.viewmodels.ForecastActivityViewModel;
 
@@ -52,7 +53,6 @@ public class ForecastActivity extends AppCompatActivity implements
 
     public ForecastAdapter forecastAdapter;
     private List<WeatherForecast.WeatherList> weatherList = new ArrayList<>();
-    private List<WeatherForecast.WeatherList> myTestList = new ArrayList<>();
 
     @BindView(R.id.recyclerview_forecast)
     RecyclerView recyclerView;
@@ -100,12 +100,7 @@ public class ForecastActivity extends AppCompatActivity implements
     }
 
     public void getWeatherForcast(String lat, String lon, ForecastAdapter.ForecastAdapterOnClickHandler clickHandler) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        WeatherApi service = retrofit.create(WeatherApi.class);
-        Call<WeatherForecast> call = service.getForecast(lat, lon, IMPERIAL, AppId);
+        Call<WeatherForecast> call = ServiceGenerator.getWeatherApi().getForecast(lat, lon, IMPERIAL, AppId);
         call.enqueue(new Callback<WeatherForecast>() {
             @Override
             public void onResponse(Call<WeatherForecast> call, Response<WeatherForecast> response) {
@@ -129,18 +124,19 @@ public class ForecastActivity extends AppCompatActivity implements
         });
     }
 
-    private void convertData(WeatherForecast weatherForecast) {
+    public void convertData(WeatherForecast weatherForecast) {
+        List<WeatherForecast.WeatherList> filteredList = new ArrayList<>();
 
         weatherList.addAll(weatherForecast.getList());
         for (int i = 0; i < weatherList.size() - 1; i++) {
             Timber.i("This is the date %s", weatherList.get(i).getDtTxt());
             if (!weatherList.get(i).getDtTxt().substring(0, 10).equals(weatherList.get(i + 1).getDtTxt().substring(0, 10))) {
-                myTestList.add(weatherList.get(i));
+                filteredList.add(weatherList.get(i));
             }
         }
-        Timber.i("Size of myTestList %s", myTestList.size());
+        Timber.i("Size of myTestList %s", filteredList.size());
         weatherList.clear();
-        weatherList.addAll(myTestList);
+        weatherList.addAll(filteredList);
     }
 
     @Override

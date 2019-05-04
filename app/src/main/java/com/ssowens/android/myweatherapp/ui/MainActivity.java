@@ -19,6 +19,7 @@ import com.ssowens.android.myweatherapp.BuildConfig;
 import com.ssowens.android.myweatherapp.R;
 import com.ssowens.android.myweatherapp.model.WeatherResponseByCity;
 import com.ssowens.android.myweatherapp.service.PollService;
+import com.ssowens.android.myweatherapp.service.ServiceGenerator;
 import com.ssowens.android.myweatherapp.service.WeatherApi;
 import com.ssowens.android.myweatherapp.viewmodels.MainActivityViewModel;
 
@@ -28,8 +29,9 @@ import java.util.Date;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
+
+import org.jetbrains.annotations.NotNull;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -199,12 +201,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getCurrentWeather(String lat, String lon) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        WeatherApi service = retrofit.create(WeatherApi.class);
-        Call<WeatherResponseByCity> call = service.getCurrentWeatherData(lat, lon, UNITS, AppId);
+        Call<WeatherResponseByCity> call = ServiceGenerator.getWeatherApi().getCurrentWeatherData(lat, lon, UNITS, AppId);
         call.enqueue(new Callback<WeatherResponseByCity>() {
             @Override
             public void onResponse(Call<WeatherResponseByCity> call, Response<WeatherResponseByCity> response) {
